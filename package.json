@@ -1,0 +1,17 @@
+{
+	"name": "property-data-scraper",
+	"version": "1.0.0",
+	"main": "app.js",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"mongoose": "^8.8.1",
+		"puppeteer": "^23.7.1",
+		"random-useragent": "^0.5.0"
+	}
+}
