@@ -11,7 +11,7 @@ const scrollToBottom = async (page) => {
 	await page.evaluate(async () => {
 		let scrollHeight = document.body.scrollHeight
 		let scrollPosition = 0
-		let distance = 100
+		let distance = 200
 
 		while (scrollPosition < scrollHeight) {
 			window.scrollTo(0, scrollPosition)
@@ -25,6 +25,7 @@ const scrollToBottom = async (page) => {
 // Function to scrape a page of properties
 export const scrapePropertiesPage = async (page, url) => {
 	try {
+		console.log(`Scraping page ${url}`)
 		await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
 		await scrollToBottom(page)
 
@@ -50,7 +51,8 @@ export const scrapePropertiesPage = async (page, url) => {
 					const location =
 						element
 							.querySelector('.wrapper .right-block .description-block .location small')
-							?.innerText.trim() || ''
+							?.innerText.replace(' , ', ', ')
+							.trim() || ''
 					const image = element.querySelector('.gallery .main-thumb img')?.src || ''
 					const description =
 						element
@@ -60,17 +62,20 @@ export const scrapePropertiesPage = async (page, url) => {
 					const accommodationItems = element.querySelectorAll(
 						'.wrapper .right-block .description-block .accommodation .list-inline li'
 					)
+
 					let bedrooms = ''
 					let bathrooms = ''
 					let propertySize = ''
 
-					accommodationItems.forEach((item, index) => {
+					accommodationItems.forEach((item) => {
 						const text = item.querySelector('span')?.innerText.trim() || ''
-						if (index === 0) {
+						const iconClass = item.querySelector('i')?.classList || []
+
+						if (iconClass.contains('icon-bedroom')) {
 							bedrooms = text
-						} else if (index === 1) {
+						} else if (iconClass.contains('icon-dp-icon-24')) {
 							bathrooms = text
-						} else if (index === 2) {
+						} else if (iconClass.contains('icon-dp-icon-26')) {
 							propertySize = text
 						}
 					})
@@ -116,12 +121,11 @@ export const scrape = async () => {
 	let url = baseUrl
 
 	while (hasNextPage) {
-		console.log(`Scraping page ${currentPage}...`)
 		const properties = await scrapePropertiesPage(page, url)
 
 		if (properties.length > 0) {
-			allProperties.push(...properties)
 			console.log(properties)
+			allProperties.push(...properties)
 
 			// Save to the database after each page
 			await saveDataToDb(properties)
