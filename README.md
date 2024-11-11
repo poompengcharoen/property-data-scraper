@@ -14,7 +14,7 @@ This project is a Node.js-based web scraper designed to collect property listing
 
 - **app.js**: The main entry point. Connects to MongoDB and initiates the scraping process.
 - **configs/db.js**: Handles MongoDB configuration, schema definition, and data-saving functions.
-- **scrapers/thailand-property.com.js**: Contains the scraping logic, including page navigation, data extraction, and pagination.
+- **scrapers/**: Contains the scraping scripts for logic, including page navigation, data extraction, and pagination.
 
 ## Requirements
 
