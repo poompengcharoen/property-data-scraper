@@ -35,7 +35,11 @@ export const extractProperties = () => {
 			// Extract bedroom, bathroom, and property size information
 			const bedrooms = element.querySelector('.i-bed')?.nextSibling?.nodeValue.trim() || ''
 			const bathrooms = element.querySelector('.i-bath')?.nextSibling?.nodeValue.trim() || ''
-			const propertySize = element.querySelector('.i-size')?.nextSibling?.nodeValue.trim() || ''
+			const propertySize =
+				element
+					.querySelector('.i-size')
+					?.parentNode?.querySelector('span.area-tooltip')
+					?.textContent.trim() || ''
 
 			properties.push({
 				title,
