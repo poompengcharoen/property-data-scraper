@@ -1,5 +1,6 @@
 import { connectDb } from './configs/db.js'
 import cron from 'node-cron'
+import fazwazComScraper from './scrapers/fazwaz.com.js'
 import scrape from './utils/scrape.js'
 import thailandPropertyScraper from './scrapers/thailand-property.com.js'
 
@@ -8,7 +9,8 @@ const main = async () => {
 		await connectDb()
 
 		// Start the scraping process
-		await scrape(thailandPropertyScraper)
+		await Promise.all([scrape(thailandPropertyScraper), scrape(fazwazComScraper)])
+
 		console.log('Scraping task completed')
 	} catch (error) {
 		console.error('Error running scraping task:', error)
