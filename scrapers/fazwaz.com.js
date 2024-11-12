@@ -35,7 +35,8 @@ export const extractProperties = () => {
 				element
 					.querySelector('.result-search__item__description .location-unit')
 					?.innerText.trim() || ''
-			const image = element.querySelector('.result-search__item__slide img')?.src || ''
+			const image =
+				element.querySelector('.result-search__item__slide img.main-gallery-img')?.src || ''
 			const description =
 				element
 					.querySelector('.result-search__item__description .unit-info__shot-description')
