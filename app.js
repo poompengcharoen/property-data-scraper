@@ -18,3 +18,8 @@ cron.schedule('*/30 * * * *', () => {
 		.then(() => console.log('Scraping task completed'))
 		.catch((error) => console.error('Error running scraping task:', error))
 })
+
+// Scrape immediately when the script starts
+main()
+	.then(() => console.log('Initial scraping task completed'))
+	.catch((error) => console.error('Error running initial scraping task:', error))
