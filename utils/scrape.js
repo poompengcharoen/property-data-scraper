@@ -4,20 +4,21 @@ import randomUseragent from 'random-useragent'
 import { saveDataToDb } from '../configs/db.js'
 import scrapePropertiesPage from './scrapePropertiesPage.js'
 
-const scrape = async (
-	baseUrl,
-	scrollDelay,
-	pageLoadTimeout,
-	navigationDelay,
-	extractProperties,
-	getNextPageUrl
-) => {
+const scrape = async (scraper) => {
+	const {
+		BASE_URL,
+		PAGE_LOAD_TIMEOUT,
+		SCROLL_DELAY,
+		NAVIGATION_DELAY,
+		extractProperties,
+		getNextPageUrl,
+	} = scraper
 	const browser = await puppeteer.launch({ headless: true })
 	const page = await browser.newPage()
 
 	await page.setUserAgent(randomUseragent.getRandom())
 
-	let url = baseUrl
+	let url = BASE_URL
 	const allProperties = []
 
 	try {
@@ -25,8 +26,8 @@ const scrape = async (
 			const properties = await scrapePropertiesPage(
 				page,
 				url,
-				scrollDelay,
-				pageLoadTimeout,
+				SCROLL_DELAY,
+				PAGE_LOAD_TIMEOUT,
 				extractProperties
 			)
 			if (properties.length > 0) {
@@ -36,7 +37,7 @@ const scrape = async (
 			}
 
 			url = await getNextPageUrl(page)
-			await delay(navigationDelay * Math.random() + navigationDelay)
+			await delay(NAVIGATION_DELAY * Math.random() + NAVIGATION_DELAY)
 		}
 	} catch (err) {
 		console.error('Error during scraping:', err)
