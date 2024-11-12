@@ -8,8 +8,12 @@ const main = async () => {
 	try {
 		await connectDb()
 
-		// Start the scraping process
-		await Promise.all([scrape(thailandPropertyScraper), scrape(fazwazScraper)])
+		// Randomly pick one scraper to run
+		const scrapers = [thailandPropertyScraper, fazwazScraper]
+		const randomScraper = scrapers[Math.floor(Math.random() * scrapers.length)]
+
+		// Start the scraping process for the randomly selected scraper
+		await scrape(randomScraper)
 
 		console.log('Scraping task completed')
 	} catch (error) {
