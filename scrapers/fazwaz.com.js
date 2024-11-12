@@ -20,8 +20,17 @@ export const extractProperties = () => {
 			const price =
 				element.querySelector('.result-search__item__description .price-tag')?.innerText.trim() ||
 				''
-			const type =
-				element.querySelector('.wrap-icon-info .i-7')?.nextSibling?.nodeValue.trim() || ''
+			const type = element.querySelector('.wrap-icon-info .i-7')
+				? 'Villa'
+				: element.querySelector('.wrap-icon-info .i-6')
+				? 'House'
+				: element.querySelector('.wrap-icon-info .i-10')
+				? 'Townhouse'
+				: element.querySelector('.wrap-icon-info .i-12')
+				? 'Land'
+				: element.querySelector('.wrap-icon-info .i-8')
+				? 'Condo'
+				: ''
 			const location =
 				element
 					.querySelector('.result-search__item__description .location-unit')
