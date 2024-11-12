@@ -4,22 +4,21 @@ import scrape from './utils/scrape.js'
 import thailandPropertyScraper from './scrapers/thailand-property.com.js'
 
 const main = async () => {
-	// Connect to the database
-	await connectDb()
+	try {
+		await connectDb()
 
-	// Start the scraping process
-	await scrape(thailandPropertyScraper)
+		// Start the scraping process
+		await scrape(thailandPropertyScraper)
+		console.log('Scraping task completed')
+	} catch (error) {
+		console.error('Error running scraping task:', error)
+	}
 }
 
-// Schedule the cron job
-cron.schedule('*/30 * * * *', () => {
-	console.log('Running the scraping task...')
-	main()
-		.then(() => console.log('Scraping task completed'))
-		.catch((error) => console.error('Error running scraping task:', error))
-})
-
 // Scrape immediately when the script starts
-main()
-	.then(() => console.log('Initial scraping task completed'))
-	.catch((error) => console.error('Error running initial scraping task:', error))
+await main()
+
+// Schedule the cron job
+cron.schedule('*/30 * * * *', async () => {
+	await main()
+})
