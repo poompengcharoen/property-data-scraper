@@ -9,12 +9,14 @@ This project is a Node.js-based web scraper designed to collect property listing
 - **Pagination Support**: Automatically navigates through multiple pages to collect data from all available listings.
 - **MongoDB Integration**: Saves data directly to a MongoDB database, using environment variables for credentials.
 - **Randomized User Agent**: Uses randomized user agents to simulate different browsers and avoid detection.
+- **Automated Scheduling with `node-cron`**: Schedule periodic scraping tasks to keep the database updated.
 
 ## Project Structure
 
-- **app.js**: The main entry point. Connects to MongoDB and initiates the scraping process.
+- **app.js**: The main entry point. Connects to MongoDB, initiates the scraping process, and sets up the cron schedule.
 - **configs/db.js**: Handles MongoDB configuration, schema definition, and data-saving functions.
 - **scrapers/**: Contains the scraping scripts for logic, including page navigation, data extraction, and pagination.
+- **utils/**: Contains the main scraping logics and page handlers.
 
 ## Requirements
 
@@ -53,13 +55,31 @@ This project is a Node.js-based web scraper designed to collect property listing
 
 ## Usage
 
-To run the scraper, simply execute:
+To run the scraper manually, simply execute:
 
 ```bash
 yarn start
 ```
 
 This will connect to MongoDB, initiate the scraping process, and save the data to the database.
+
+### Automated Scheduling with `node-cron`
+
+This project uses `node-cron` to automate scraping at regular intervals. By default, it is set up in `app.js` to run every hour. To customize the interval:
+
+1. **Open `app.js`** and locate the cron schedule line:
+
+   ```javascript
+   cron.schedule('0 * * * *', () => { ... });
+   ```
+
+   The schedule `'0 * * * *'` will run the scraping process at the start of every hour. Modify this cron expression as needed to set your desired interval (e.g., every day, every 15 minutes).
+
+2. **Run the scraper**:
+   ```bash
+   yarn start
+   ```
+   This will start the application, connect to MongoDB, and set up the cron job.
 
 ## MongoDB Schema
 
@@ -86,6 +106,7 @@ Each property entry is saved with the following fields:
 - **mongoose**: For MongoDB object modeling.
 - **puppeteer**: For headless browser automation.
 - **random-useragent**: For rotating user agents to avoid detection.
+- **node-cron**: For scheduling periodic scraping tasks.
 
 ## Contributing
 
