@@ -1,0 +1,28 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run deploy script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            export NVM_DIR="/root/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Load NVM
+            export PATH=$PATH:/root/.nvm/versions/node/v18.20.4/bin  # Add Node.js to PATH
+            cd /opt/property-data-scraper
+            git pull
+            pm2 stop "scraper"
+            pm2 delete "scraper"
+            yarn
+            pm2 start "yarn start" --name "scraper"
+            exit
