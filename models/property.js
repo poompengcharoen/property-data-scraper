@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 
 const propertySchema = new mongoose.Schema(
 	{
+		link: { type: String, unique: true },
 		title: String,
 		type: String,
 		price: String,
@@ -11,10 +12,10 @@ const propertySchema = new mongoose.Schema(
 		location: String,
 		description: String,
 		image: String,
-		link: { type: String, unique: true }, // Enforce unique links
+		keywords: String,
 	},
 	{
-		timestamps: true, // Enable createdAt and updatedAt
+		timestamps: true,
 	}
 )
 
