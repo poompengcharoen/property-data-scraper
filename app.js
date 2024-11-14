@@ -24,7 +24,7 @@ const main = async () => {
 // Scrape immediately when the script starts
 await main()
 
-// Schedule the cron job
-cron.schedule('*/30 * * * *', async () => {
+// Schedule the cron job to run at midnight and midday every day
+cron.schedule('0 0,12 * * *', async () => {
 	await main()
 })
