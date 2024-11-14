@@ -1,7 +1,7 @@
 import delay from './delay.js'
 import puppeteer from 'puppeteer'
 import randomUseragent from 'random-useragent'
-import { saveDataToDb } from '../configs/db.js'
+import saveDataToDb from './saveDataToDb.js'
 import scrapePropertiesPage from './scrapePropertiesPage.js'
 
 const scrape = async (scraper) => {
