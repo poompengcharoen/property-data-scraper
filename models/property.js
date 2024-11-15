@@ -13,6 +13,7 @@ const propertySchema = new mongoose.Schema(
 		description: String,
 		image: String,
 		keywords: [String],
+		analyzed: Boolean,
 	},
 	{
 		timestamps: true,
