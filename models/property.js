@@ -12,7 +12,7 @@ const propertySchema = new mongoose.Schema(
 		location: String,
 		description: String,
 		image: String,
-		keywords: String,
+		keywords: [String],
 	},
 	{
 		timestamps: true,
