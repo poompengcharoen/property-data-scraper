@@ -16,7 +16,6 @@ const main = async () => {
 		await scrape(randomScraper)
 
 		console.log('Scraping task completed')
-		process.exit(0)
 	} catch (error) {
 		console.error('Error running scraping task:', error)
 	}
