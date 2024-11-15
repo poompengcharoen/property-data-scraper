@@ -1,4 +1,5 @@
 import delay from './delay.js'
+import formatPrice from './formatPrice.js'
 import puppeteer from 'puppeteer'
 import randomUseragent from 'random-useragent'
 import saveDataToDb from './saveDataToDb.js'
@@ -22,7 +23,6 @@ const scrape = async (scraper) => {
 	await page.setUserAgent(randomUseragent.getRandom())
 
 	let url = BASE_URL
-	const allProperties = []
 
 	try {
 		while (url) {
@@ -34,9 +34,17 @@ const scrape = async (scraper) => {
 				extractProperties
 			)
 			if (properties.length > 0) {
-				console.log(properties)
-				allProperties.push(...properties)
-				await saveDataToDb(properties)
+				const formattedProperties = properties.map((property) => {
+					const { priceNumeric, currencyCode } = formatPrice(property.price)
+					return {
+						...property,
+						priceNumeric,
+						currencyCode,
+					}
+				})
+
+				console.log(formattedProperties)
+				await saveDataToDb(formattedProperties)
 			}
 
 			url = await getNextPageUrl(page)
