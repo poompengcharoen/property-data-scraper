@@ -1,4 +1,5 @@
-import { connectDb } from './configs/db.js'
+import { connectDb, disconnectDb } from './configs/db.js'
+
 import cron from 'node-cron'
 import fazwazScraper from './scrapers/fazwaz.com.js'
 import scrape from './utils/scrape.js'
@@ -14,6 +15,9 @@ const main = async () => {
 
 		// Start the scraping process for the randomly selected scraper
 		await scrape(randomScraper)
+
+		// Disconnect from database
+		await disconnectDb()
 
 		console.log('Scraping task completed')
 	} catch (error) {
