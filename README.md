@@ -85,15 +85,17 @@ This project uses `node-cron` to automate scraping at regular intervals. By defa
 
 Each property entry is saved with the following fields:
 
-- `title`: The title of the property listing.
-- `type`: Type of property (e.g., Condo, House).
-- `price`: Listed price of the property.
-- `bedrooms`, `bathrooms`: Number of bedrooms and bathrooms.
-- `propertySize`: Size of the property.
-- `location`: Location of the property.
-- `description`: A brief description of the property.
-- `image`: URL to the main image of the property.
-- `link`: Unique URL for the property listing (used as a unique identifier).
+- **`title`**: The title of the property listing.
+- **`type`**: Type of property (e.g., Condo, House).
+- **`price`**: Original price string.
+- **`priceNumeric`**: Extracted numerical price.
+- **`currencyCode`**: Currency of the price (e.g., THB, USD).
+- **`bedrooms`**, **`bathrooms`**: Number of bedrooms and bathrooms.
+- **`propertySize`**: Size of the property.
+- **`location`**: Location of the property.
+- **`description`**: A brief description of the property.
+- **`keywords`**: Keywords generated for the property.
+- **`link`**: Unique URL for the property listing.
 
 ## Error Handling
 
