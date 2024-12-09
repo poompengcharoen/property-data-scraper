@@ -1,4 +1,11 @@
-export const BASE_URL = 'https://www.fazwaz.com/property-for-sale/thailand'
+import sample from 'lodash/sample.js'
+
+export const NAME = 'Fazwaz'
+export const BASE_URLS = [
+	'https://www.fazwaz.com/property-for-sale/thailand',
+	'https://www.fazwaz.com/property-for-rent/thailand',
+]
+export const BASE_URL = sample(BASE_URLS)
 export const PAGE_LOAD_TIMEOUT = 60000
 export const SCROLL_DELAY = 300
 export const NAVIGATION_DELAY = 1000
@@ -80,6 +87,8 @@ export const getNextPageUrl = async (page) => {
 }
 
 export default {
+	NAME,
+	BASE_URLS,
 	BASE_URL,
 	PAGE_LOAD_TIMEOUT,
 	SCROLL_DELAY,

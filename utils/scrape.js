@@ -5,7 +5,7 @@ import randomUseragent from 'random-useragent'
 import saveDataToDb from './saveDataToDb.js'
 import scrapePropertiesPage from './scrapePropertiesPage.js'
 
-const scrape = async (scraper) => {
+const scrape = async (scraper, endpoint) => {
 	const {
 		BASE_URL,
 		PAGE_LOAD_TIMEOUT,
@@ -22,7 +22,7 @@ const scrape = async (scraper) => {
 
 	await page.setUserAgent(randomUseragent.getRandom())
 
-	let url = BASE_URL
+	let url = endpoint || BASE_URL
 
 	try {
 		while (url) {
