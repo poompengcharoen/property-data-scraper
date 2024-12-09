@@ -1,7 +1,10 @@
 import sample from 'lodash/sample.js'
 
 export const NAME = 'Thailand Property'
-export const BASE_URLS = ['https://www.thailand-property.com/properties-for-sale']
+export const BASE_URLS = [
+	'https://www.thailand-property.com/properties-for-sale',
+	'https://www.thailand-property.com/properties-for-rent',
+]
 export const BASE_URL = sample(BASE_URLS)
 export const PAGE_LOAD_TIMEOUT = 60000
 export const SCROLL_DELAY = 300
