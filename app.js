@@ -8,34 +8,28 @@ import thailandPropertyScraper from './scrapers/thailand-property.com.js'
 
 const scrapers = [thailandPropertyScraper, fazwazScraper]
 
-const main = async () => {
+const runScraper = async (scraper, endpoint = null) => {
 	try {
 		await connectDb()
-
-		// Randomly pick one scraper to run
-		const randomScraper = scrapers[Math.floor(Math.random() * scrapers.length)]
-
-		// Start the scraping process for the randomly selected scraper
-		await scrape(randomScraper)
-
-		// Disconnect from database
-		await disconnectDb()
-
-		console.log('Scraping task completed')
+		await scrape(scraper, endpoint)
+		console.log(`Scraping task for ${scraper.NAME} completed.`)
 	} catch (error) {
-		console.error('Error running scraping task:', error)
+		console.error(`Error running scraping task for ${scraper.NAME}:`, error)
+	} finally {
+		await disconnectDb()
 	}
 }
 
-// Schedule the cron job to run at midnight and midday every day
-cron.schedule('0 0,12 * * *', async () => {
-	await main()
-})
+const scheduleCronJobs = () => {
+	cron.schedule('0 0,12 * * *', async () => {
+		const randomScraper = scrapers[Math.floor(Math.random() * scrapers.length)]
+		await runScraper(randomScraper)
+	})
+	console.log('Cron jobs scheduled for midnight and midday.')
+}
 
-// Development mode
-if (process.env.NODE_ENV === 'development') {
-	// Prompt the user to pick a scraper to run
-	const scraperPrompt = await inquirer.prompt([
+const promptForScraper = async () => {
+	const { scraper: selectedScraperName, endpoint } = await inquirer.prompt([
 		{
 			type: 'list',
 			name: 'scraper',
@@ -46,7 +40,6 @@ if (process.env.NODE_ENV === 'development') {
 			type: 'list',
 			name: 'endpoint',
 			message: 'Choose an endpoint to run:',
-			// Dynamically fetch BASE_URLS for the selected scraper
 			choices: (answers) => {
 				const selectedScraper = scrapers.find((scraper) => scraper.NAME === answers.scraper)
 				return selectedScraper.BASE_URLS
@@ -55,16 +48,17 @@ if (process.env.NODE_ENV === 'development') {
 		},
 	])
 
-	// Get the selected scraper and endpoint from the prompt
-	const selectedScraperName = scraperPrompt.scraper
 	const selectedScraper = scrapers.find((scraper) => scraper.NAME === selectedScraperName)
-	const endpoint = scraperPrompt.endpoint
-
-	// Start the scraping process for the selected scraper
-	await scrape(selectedScraper, endpoint)
-
-	// Disconnect from database
-	await disconnectDb()
-
-	console.log('Scraping task completed')
+	await runScraper(selectedScraper, endpoint)
 }
+
+const main = async () => {
+	if (process.env.NODE_ENV === 'development') {
+		console.log('Running in development mode...')
+		await promptForScraper()
+	} else {
+		scheduleCronJobs()
+	}
+}
+
+main()
