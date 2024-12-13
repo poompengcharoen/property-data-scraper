@@ -66,7 +66,7 @@ export const extractProperties = () => {
 // Fetch the URL of the next page if it exists
 export const getNextPageUrl = async (page) => {
 	return await page.evaluate(() => {
-		const nextButton = document.querySelector('a[aria-label="Next"]')
+		const nextButton = document.querySelector('.pagination .pagination-next a')
 		return nextButton ? nextButton.href : null
 	})
 }
