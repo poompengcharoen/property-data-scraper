@@ -1,12 +1,9 @@
 import { connectDb, disconnectDb } from './configs/db.js'
 
 import cron from 'node-cron'
-import fazwazScraper from './scrapers/fazwaz.com.js'
 import inquirer from 'inquirer'
 import scrape from './utils/scrape.js'
-import thailandPropertyScraper from './scrapers/thailand-property.com.js'
-
-const scrapers = [thailandPropertyScraper, fazwazScraper]
+import scrapers from './scrapers/index.js'
 
 const runScraper = async (scraper, endpoint = null) => {
 	try {

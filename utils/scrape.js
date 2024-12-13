@@ -15,7 +15,7 @@ const scrape = async (scraper, endpoint) => {
 		getNextPageUrl,
 	} = scraper
 	const browser = await puppeteer.launch({
-		headless: true,
+		headless: process.env.NODE_ENV === 'production',
 		args: ['--no-sandbox', '--disable-setuid-sandbox'],
 	})
 	const page = await browser.newPage()
@@ -35,6 +35,10 @@ const scrape = async (scraper, endpoint) => {
 			)
 			if (properties.length > 0) {
 				const formattedProperties = properties.map((property) => {
+					if (!property.price) {
+						return property
+					}
+
 					const { priceNumeric, currencyCode } = formatPrice(property.price)
 					return {
 						...property,
